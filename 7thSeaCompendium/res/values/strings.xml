@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">7th Sea Compendium</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_category_view">CategoryViewActivity</string>
+    <string name="title_activity_information_view">InformationViewActivity</string>
+
+</resources>
