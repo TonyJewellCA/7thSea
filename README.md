@@ -1,0 +1,1 @@
+application to view 7th sea data
