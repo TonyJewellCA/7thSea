@@ -2,6 +2,8 @@ package com.seventhsea.compendium;
 
 import java.util.Map;
 
+import us.feras.mdv.MarkdownView;
+
 import com.example.compendium.R;
 import com.example.compendium.R.layout;
 import com.example.compendium.R.menu;
@@ -17,11 +19,13 @@ public class InformationViewActivity extends Activity {
 	
 	private int m_infoId;
 	private String m_infoName;
-
+	MarkdownView m_markdownView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_information_view);
+		m_markdownView = new MarkdownView(this); 
+		setContentView(m_markdownView);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 			
@@ -56,8 +60,7 @@ public class InformationViewActivity extends Activity {
 		CompendiumDatabase database =  new CompendiumDatabase();
 		Map<String, String> info = database.GetItemInformation(m_infoId);
 		
-		TextView description = (TextView)findViewById(R.id.info_descriotion);
-		description.setText(info.get("information"));
+		m_markdownView.loadMarkDownData(info.get("information"));
 	}
 
 }
