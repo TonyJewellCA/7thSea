@@ -44,6 +44,9 @@
             this.newPartButton = new System.Windows.Forms.Button();
             this.editPartButton = new System.Windows.Forms.Button();
             this.deletePartButton = new System.Windows.Forms.Button();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.partFilterBox = new System.Windows.Forms.ComboBox();
             this.partListBox = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -60,9 +63,6 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.partFilterBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.categoryBox.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -70,12 +70,12 @@
             this.partsBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.flowLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -123,6 +123,7 @@
             // 
             // categorySelector
             // 
+            this.categorySelector.Enabled = false;
             this.categorySelector.FormattingEnabled = true;
             this.categorySelector.Location = new System.Drawing.Point(3, 3);
             this.categorySelector.Name = "categorySelector";
@@ -133,6 +134,7 @@
             // 
             // newCategoryButton
             // 
+            this.newCategoryButton.Enabled = false;
             this.newCategoryButton.Location = new System.Drawing.Point(130, 3);
             this.newCategoryButton.Name = "newCategoryButton";
             this.newCategoryButton.Size = new System.Drawing.Size(75, 23);
@@ -143,6 +145,7 @@
             // 
             // renameCategoryButton
             // 
+            this.renameCategoryButton.Enabled = false;
             this.renameCategoryButton.Location = new System.Drawing.Point(211, 3);
             this.renameCategoryButton.Name = "renameCategoryButton";
             this.renameCategoryButton.Size = new System.Drawing.Size(75, 23);
@@ -153,6 +156,7 @@
             // 
             // deleteCategoryButton
             // 
+            this.deleteCategoryButton.Enabled = false;
             this.deleteCategoryButton.Location = new System.Drawing.Point(292, 3);
             this.deleteCategoryButton.Name = "deleteCategoryButton";
             this.deleteCategoryButton.Size = new System.Drawing.Size(75, 23);
@@ -198,7 +202,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel2, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel5, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.partListBox, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.partListBox, 0, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -215,13 +219,14 @@
             this.flowLayoutPanel2.Controls.Add(this.editPartButton);
             this.flowLayoutPanel2.Controls.Add(this.deletePartButton);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(197, 39);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
             // newPartButton
             // 
+            this.newPartButton.Enabled = false;
             this.newPartButton.Location = new System.Drawing.Point(3, 3);
             this.newPartButton.Name = "newPartButton";
             this.newPartButton.Size = new System.Drawing.Size(50, 23);
@@ -232,6 +237,7 @@
             // 
             // editPartButton
             // 
+            this.editPartButton.Enabled = false;
             this.editPartButton.Location = new System.Drawing.Point(59, 3);
             this.editPartButton.Name = "editPartButton";
             this.editPartButton.Size = new System.Drawing.Size(50, 23);
@@ -242,6 +248,7 @@
             // 
             // deletePartButton
             // 
+            this.deletePartButton.Enabled = false;
             this.deletePartButton.Location = new System.Drawing.Point(115, 3);
             this.deletePartButton.Name = "deletePartButton";
             this.deletePartButton.Size = new System.Drawing.Size(50, 23);
@@ -250,13 +257,46 @@
             this.deletePartButton.UseVisualStyleBackColor = true;
             this.deletePartButton.Click += new System.EventHandler(this.deletePartButton_Click);
             // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.Controls.Add(this.label1);
+            this.flowLayoutPanel5.Controls.Add(this.partFilterBox);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 48);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(197, 39);
+            this.flowLayoutPanel5.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Filter:";
+            // 
+            // partFilterBox
+            // 
+            this.partFilterBox.Enabled = false;
+            this.partFilterBox.FormattingEnabled = true;
+            this.partFilterBox.Items.AddRange(new object[] {
+            "Current Category",
+            "All Parts"});
+            this.partFilterBox.Location = new System.Drawing.Point(41, 3);
+            this.partFilterBox.Name = "partFilterBox";
+            this.partFilterBox.Size = new System.Drawing.Size(121, 21);
+            this.partFilterBox.TabIndex = 1;
+            this.partFilterBox.Text = "All Parts";
+            this.partFilterBox.SelectedIndexChanged += new System.EventHandler(this.partFilterBox_SelectedIndexChanged);
+            // 
             // partListBox
             // 
             this.partListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.partListBox.FormattingEnabled = true;
-            this.partListBox.Location = new System.Drawing.Point(3, 48);
+            this.partListBox.Location = new System.Drawing.Point(3, 93);
             this.partListBox.Name = "partListBox";
-            this.partListBox.Size = new System.Drawing.Size(197, 289);
+            this.partListBox.Size = new System.Drawing.Size(197, 244);
             this.partListBox.Sorted = true;
             this.partListBox.TabIndex = 1;
             this.partListBox.SelectedIndexChanged += new System.EventHandler(this.partListBox_SelectedIndexChanged);
@@ -303,6 +343,7 @@
             // 
             // itemSelector
             // 
+            this.itemSelector.Enabled = false;
             this.itemSelector.FormattingEnabled = true;
             this.itemSelector.Location = new System.Drawing.Point(3, 3);
             this.itemSelector.Name = "itemSelector";
@@ -366,6 +407,7 @@
             // 
             // removePartButton
             // 
+            this.removePartButton.Enabled = false;
             this.removePartButton.Location = new System.Drawing.Point(84, 3);
             this.removePartButton.Name = "removePartButton";
             this.removePartButton.Size = new System.Drawing.Size(96, 23);
@@ -417,38 +459,6 @@
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // flowLayoutPanel5
-            // 
-            this.flowLayoutPanel5.Controls.Add(this.label1);
-            this.flowLayoutPanel5.Controls.Add(this.partFilterBox);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 32);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(200, 42);
-            this.flowLayoutPanel5.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Filter:";
-            // 
-            // partFilterBox
-            // 
-            this.partFilterBox.FormattingEnabled = true;
-            this.partFilterBox.Items.AddRange(new object[] {
-            "Current Category",
-            "All Parts"});
-            this.partFilterBox.Location = new System.Drawing.Point(41, 3);
-            this.partFilterBox.Name = "partFilterBox";
-            this.partFilterBox.Size = new System.Drawing.Size(121, 21);
-            this.partFilterBox.TabIndex = 1;
-            this.partFilterBox.Text = "All Parts";
-            this.partFilterBox.SelectedIndexChanged += new System.EventHandler(this.partFilterBox_SelectedIndexChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -467,14 +477,14 @@
             this.partsBox.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.flowLayoutPanel5.ResumeLayout(false);
-            this.flowLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

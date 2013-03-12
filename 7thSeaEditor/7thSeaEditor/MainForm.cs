@@ -110,6 +110,7 @@ namespace _7thSeaEditor
         void EnableItemCreationControlsIfNecessary()
         {
             bool enable = (categorySelector.SelectedIndex != -1);
+            itemSelector.Enabled = enable;
             newItemButton.Enabled = enable;
             editItemButton.Enabled = enable;
             deleteItemButton.Enabled = enable;
@@ -140,6 +141,18 @@ namespace _7thSeaEditor
 
             if (dialog.ShowDialog() == DialogResult.OK)
                 CreateNewCategory(dialog.InputText);
+        }
+
+        private void EnableControlsOnDatabaseLoad()
+        {
+            categorySelector.Enabled = true;
+            newCategoryButton.Enabled = true;
+            renameCategoryButton.Enabled = true;
+            deleteCategoryButton.Enabled = true;
+            newPartButton.Enabled = true;
+            editPartButton.Enabled = true;
+            deletePartButton.Enabled = true;
+            partFilterBox.Enabled = true;
         }
 
         private void categorySelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -310,6 +323,7 @@ namespace _7thSeaEditor
             database.Open(path);
             SeventhSeaUtils.SetListItems(categorySelector, database.GetCategoryListInfo());
             SeventhSeaUtils.SetListItems(partListBox, database.GetPartListInfo());
+            EnableControlsOnDatabaseLoad();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
