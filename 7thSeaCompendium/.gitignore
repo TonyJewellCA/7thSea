@@ -1,0 +1,3 @@
+bin/*
+!bin/AndroidManifest.xml
+gen/*
