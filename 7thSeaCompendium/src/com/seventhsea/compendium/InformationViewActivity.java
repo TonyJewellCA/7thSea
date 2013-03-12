@@ -2,8 +2,6 @@ package com.seventhsea.compendium;
 
 import java.util.Map;
 
-import us.feras.mdv.MarkdownView;
-
 import com.example.compendium.R;
 import com.example.compendium.R.layout;
 import com.example.compendium.R.menu;
