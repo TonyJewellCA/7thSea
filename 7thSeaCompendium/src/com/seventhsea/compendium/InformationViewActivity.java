@@ -58,9 +58,13 @@ public class InformationViewActivity extends Activity {
 	
 	void initView(){
 		CompendiumDatabase database =  new CompendiumDatabase();
-		Map<String, String> info = database.GetItemInformation(m_infoId);
+		SeventhSeaItem item = database.GetItem(m_infoId);
 		
-		m_markdownView.loadMarkDownData(info.get("information"));
+		String html = "<body style='background-color:black; color:white;'>" +
+				item.getMarkup() +
+				"</body>";
+		
+		m_markdownView.loadMarkDownData(html);
 	}
 
 }
