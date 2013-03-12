@@ -114,20 +114,8 @@ namespace _7thSeaEditor
 
         private void SetActiveCategory(int id)
         {
-            itemSelector.Text = "";
-            itemSelector.Items.Clear();
 
-            if (id != -1)
-            {
-                ListItemWithId[] items = database.GetItemListForCategory(id);
-                itemSelector.BeginUpdate();
-
-                for (int i = 0; i < items.Length; i++)
-                    itemSelector.Items.Add(items[i]);
-
-                itemSelector.EndUpdate();
-
-            }
+            SeventhSeaUtils.SetListItems(itemSelector, database.GetItemListForCategory(id));
 
             EnableAddPartButtonIfNecessary();
             EnableItemCreationControlsIfNecessary();
@@ -225,15 +213,10 @@ namespace _7thSeaEditor
             previewWindow.DocumentText = item.GetMarkdown();
         }
 
-        private void RemovePartFromitem(int partId, int itemId)
+        private void RemovePartFromitem(int itemPartId)
         {
-            database.RemovePartFromItem(partId, itemId);
-            SeventhSeaPart part = database.GetPart(partId);
-            SeventhSeaItem item = database.GetItem(itemId);
-
+            database.RemovePartFromItem(itemPartId);
             currentItemPartsBox.Items.RemoveAt(currentItemPartsBox.SelectedIndex);
-
-            previewWindow.DocumentText = item.GetMarkdown();
         }
 
         private void EnableItemEditingControlsIfNecessary()
@@ -264,8 +247,7 @@ namespace _7thSeaEditor
             if (itemSelector.SelectedIndex != -1)
             {
                 ListItemWithId itemItem = (ListItemWithId)itemSelector.Items[itemSelector.SelectedIndex];
-                SeventhSeaItem item = database.GetItem(itemItem.Id);
-                previewWindow.DocumentText = item.GetMarkdown();
+                SeventhSeaUtils.SetListItems(currentItemPartsBox, database.GetItemPartsList(itemItem.Id));
             }
 
             EnableAddPartButtonIfNecessary();
@@ -280,10 +262,10 @@ namespace _7thSeaEditor
 
         private void removePartButton_Click(object sender, EventArgs e)
         {
-            ListItemWithId part = (ListItemWithId)partListBox.Items[partListBox.SelectedIndex];
-            ListItemWithId item = (ListItemWithId)itemSelector.Items[itemSelector.SelectedIndex];
 
-            RemovePartFromitem(part.Id, item.Id);
+            ListItemWithId itemPart = (ListItemWithId)currentItemPartsBox.Items[currentItemPartsBox.SelectedIndex];
+
+            RemovePartFromitem(itemPart.Id);
         }
 
         private void SwapCurrentPartsItems(int a, int b)
@@ -323,6 +305,25 @@ namespace _7thSeaEditor
                 SwapCurrentPartsItems(currentItemPartsBox.SelectedIndex, currentItemPartsBox.SelectedIndex + 1);
 
             previewWindow.DocumentText = item.GetMarkdown();
+        }
+
+        private void LoadDatabase(string path)
+        {
+            database.Open(path);
+            SeventhSeaUtils.SetListItems(categorySelector, database.GetCategoryListInfo());
+            SeventhSeaUtils.SetListItems(partListBox, database.GetPartListInfo());
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.CheckFileExists = true;
+            dialog.CheckPathExists = true;
+            dialog.Multiselect = false;
+            dialog.Title = "Open Database";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+                LoadDatabase(dialog.FileName);
         }
     }
 }

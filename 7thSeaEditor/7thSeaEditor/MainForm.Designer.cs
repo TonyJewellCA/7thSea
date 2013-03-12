@@ -56,11 +56,12 @@
             this.addPartButton = new System.Windows.Forms.Button();
             this.partUpButton = new System.Windows.Forms.Button();
             this.partDownButton = new System.Windows.Forms.Button();
+            this.removePartButton = new System.Windows.Forms.Button();
             this.currentItemPartsBox = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removePartButton = new System.Windows.Forms.Button();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.categoryBox.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -382,6 +383,16 @@
             this.partDownButton.UseVisualStyleBackColor = true;
             this.partDownButton.Click += new System.EventHandler(this.partDownButton_Click);
             // 
+            // removePartButton
+            // 
+            this.removePartButton.Location = new System.Drawing.Point(246, 3);
+            this.removePartButton.Name = "removePartButton";
+            this.removePartButton.Size = new System.Drawing.Size(96, 23);
+            this.removePartButton.TabIndex = 3;
+            this.removePartButton.Text = "Remove Part";
+            this.removePartButton.UseVisualStyleBackColor = true;
+            this.removePartButton.Click += new System.EventHandler(this.removePartButton_Click);
+            // 
             // currentItemPartsBox
             // 
             this.currentItemPartsBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -405,6 +416,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
             this.closeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -413,19 +425,16 @@
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // removePartButton
+            // openToolStripMenuItem
             // 
-            this.removePartButton.Location = new System.Drawing.Point(246, 3);
-            this.removePartButton.Name = "removePartButton";
-            this.removePartButton.Size = new System.Drawing.Size(96, 23);
-            this.removePartButton.TabIndex = 3;
-            this.removePartButton.Text = "Remove Part";
-            this.removePartButton.UseVisualStyleBackColor = true;
-            this.removePartButton.Click += new System.EventHandler(this.removePartButton_Click);
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -490,6 +499,7 @@
         private System.Windows.Forms.Button partDownButton;
         private System.Windows.Forms.ListBox currentItemPartsBox;
         private System.Windows.Forms.Button removePartButton;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
     }
 }
 
