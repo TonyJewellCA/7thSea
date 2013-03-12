@@ -17,6 +17,7 @@ namespace _7thSeaEditor
         public MainForm()
         {
             InitializeComponent();
+            PreviewMarkup("");
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -56,12 +57,11 @@ namespace _7thSeaEditor
                 ListItemWithId item = (ListItemWithId)partListBox.Items[partListBox.SelectedIndex];
 
                 SeventhSeaPart part = database.GetPart(item.Id);
-                previewWindow.DocumentText = part.GetMarkdown();
+                PreviewMarkup(part.GetMarkdown());
             }
             else
-            {
-                previewWindow.DocumentText = "";
-            }
+                PreviewMarkup("");
+                
 
             EnableAddPartButtonIfNecessary();
         }
@@ -79,7 +79,7 @@ namespace _7thSeaEditor
             database.UpdatePart(id, name, description);
             partListBox.Items[partListBox.SelectedIndex] = new ListItemWithId(name, id);
 
-            previewWindow.DocumentText = description;
+            PreviewMarkup(description);
         }
 
         private void DeletePart(int id)
@@ -125,6 +125,11 @@ namespace _7thSeaEditor
             EnableAddPartButtonIfNecessary();
             EnableItemCreationControlsIfNecessary();
             EnableItemEditingControlsIfNecessary();
+        }
+
+        private void PreviewMarkup(string markup)
+        {
+            previewWindow.DocumentText = SeventhSeaUtils.MakeHtmlDoc(markup);
         }
 
         private void newCategoryButton_Click(object sender, EventArgs e)
@@ -211,13 +216,13 @@ namespace _7thSeaEditor
         private void PreviewCurrentItem()
         {
             if (itemSelector.SelectedIndex == -1)
-                previewWindow.DocumentText = "";
+                PreviewMarkup("");
             else
             {
                 ListItemWithId itemItem = (ListItemWithId)itemSelector.Items[itemSelector.SelectedIndex];
                 SeventhSeaItem item = database.GetItem(itemItem.Id);
 
-                previewWindow.DocumentText = item.GetMarkdown();
+                PreviewMarkup(item.GetMarkdown());
             }
         }
 
@@ -324,7 +329,7 @@ namespace _7thSeaEditor
             database.DeleteItem(id);
             itemSelector.Items.RemoveAt(itemSelector.SelectedIndex);
 
-            previewWindow.DocumentText = "";
+            PreviewMarkup("");
         }
 
         private void deleteItemButton_Click(object sender, EventArgs e)

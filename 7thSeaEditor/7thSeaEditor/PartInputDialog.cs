@@ -15,6 +15,7 @@ namespace _7thSeaEditor
         public PartInputDialog()
         {
             InitializeComponent();
+            previewWindow.DocumentText = SeventhSeaUtils.MakeHtmlDoc("");
         }
 
         public string TitleCaptionText
@@ -43,7 +44,12 @@ namespace _7thSeaEditor
 
         private void previewButton_Click(object sender, EventArgs e)
         {
-            previewWindow.DocumentText = descriptionBox.Text;
+            UpdatePreview();
+        }
+
+        private void UpdatePreview()
+        {
+            previewWindow.DocumentText = SeventhSeaUtils.MakeHtmlDoc(descriptionBox.Text);
         }
 
         private void TagSelection(string tagStart, string tagEnd)
@@ -63,26 +69,31 @@ namespace _7thSeaEditor
         private void boldButton_Click(object sender, EventArgs e)
         {
             TagSelection("<strong>", "</strong>");
+            UpdatePreview();
         }
 
         private void exampleButton_Click(object sender, EventArgs e)
         {
-            TagSelection("<p style='background-color:#E8E8E8;'>", "</p>");
+            TagSelection("<p class='example'>", "</p>");
+            UpdatePreview();
         }
 
         private void italicButton_Click(object sender, EventArgs e)
         {
             TagSelection("<em>", "</em>");
+            UpdatePreview();
         }
 
         private void headerButton_Click(object sender, EventArgs e)
         {
             TagSelection("<h3>", "</h3>");
+            UpdatePreview();
         }
 
         private void linebreakButton_Click(object sender, EventArgs e)
         {
             descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "<br/>");
+            UpdatePreview();
         }
     }
 }

@@ -33,5 +33,10 @@ namespace _7thSeaEditor
 
             comboBox.EndUpdate();
         }
+
+        public static string MakeHtmlDoc(string body)
+        {
+            return "<html><head><style>body{background-color:black;color:white;}.example{border: 1px solid gray;}</style></head><body>" + body + "</body></html>";
+        }
     }
 }
