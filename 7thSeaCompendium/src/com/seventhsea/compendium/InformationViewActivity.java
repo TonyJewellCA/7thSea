@@ -13,20 +13,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 public class InformationViewActivity extends Activity {
 	
 	private int m_infoId;
 	private String m_infoName;
-	MarkdownView m_markdownView;
+	WebView m_webView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		m_markdownView = new MarkdownView(this); 
-		setContentView(m_markdownView);
-		
+
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 			
 		Intent intent = getIntent();
@@ -57,6 +56,8 @@ public class InformationViewActivity extends Activity {
 	}
 	
 	void initView(){
+		m_webView = new WebView(this); 
+		
 		CompendiumDatabase database =  new CompendiumDatabase();
 		SeventhSeaItem item = database.GetItem(m_infoId);
 		
@@ -64,7 +65,9 @@ public class InformationViewActivity extends Activity {
 				item.getMarkup() +
 				"</body>";
 		
-		m_markdownView.loadMarkDownData(html);
+		m_webView.loadData(html,"text/html", null);
+		
+		setContentView(m_webView);
 	}
 
 }
