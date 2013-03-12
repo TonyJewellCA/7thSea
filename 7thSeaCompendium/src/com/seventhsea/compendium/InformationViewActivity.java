@@ -1,18 +1,12 @@
 package com.seventhsea.compendium;
 
-import java.util.Map;
-
 import com.example.compendium.R;
-import com.example.compendium.R.layout;
-import com.example.compendium.R.menu;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
-import android.widget.TextView;
 
 public class InformationViewActivity extends Activity {
 	
