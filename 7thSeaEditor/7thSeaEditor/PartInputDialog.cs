@@ -79,5 +79,10 @@ namespace _7thSeaEditor
         {
             TagSelection("<h3>", "</h3>");
         }
+
+        private void linebreakButton_Click(object sender, EventArgs e)
+        {
+            descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "<br/>");
+        }
     }
 }

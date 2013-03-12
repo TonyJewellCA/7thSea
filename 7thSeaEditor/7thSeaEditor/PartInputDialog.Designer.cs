@@ -40,11 +40,12 @@
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.boldButton = new System.Windows.Forms.Button();
-            this.exampleButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.boldButton = new System.Windows.Forms.Button();
             this.italicButton = new System.Windows.Forms.Button();
+            this.exampleButton = new System.Windows.Forms.Button();
             this.headerButton = new System.Windows.Forms.Button();
+            this.linebreakButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -129,6 +130,7 @@
             // 
             // descriptionBox
             // 
+            this.descriptionBox.AcceptsReturn = true;
             this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionBox.Location = new System.Drawing.Point(8, 93);
             this.descriptionBox.Multiline = true;
@@ -173,31 +175,12 @@
             this.flowLayoutPanel2.Controls.Add(this.italicButton);
             this.flowLayoutPanel2.Controls.Add(this.exampleButton);
             this.flowLayoutPanel2.Controls.Add(this.headerButton);
+            this.flowLayoutPanel2.Controls.Add(this.linebreakButton);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(8, 293);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(390, 100);
             this.flowLayoutPanel2.TabIndex = 7;
-            // 
-            // boldButton
-            // 
-            this.boldButton.Location = new System.Drawing.Point(63, 3);
-            this.boldButton.Name = "boldButton";
-            this.boldButton.Size = new System.Drawing.Size(25, 23);
-            this.boldButton.TabIndex = 0;
-            this.boldButton.Text = "B";
-            this.boldButton.UseVisualStyleBackColor = true;
-            this.boldButton.Click += new System.EventHandler(this.boldButton_Click);
-            // 
-            // exampleButton
-            // 
-            this.exampleButton.Location = new System.Drawing.Point(129, 3);
-            this.exampleButton.Name = "exampleButton";
-            this.exampleButton.Size = new System.Drawing.Size(36, 23);
-            this.exampleButton.TabIndex = 1;
-            this.exampleButton.Text = "Ex.";
-            this.exampleButton.UseVisualStyleBackColor = true;
-            this.exampleButton.Click += new System.EventHandler(this.exampleButton_Click);
             // 
             // label1
             // 
@@ -209,6 +192,16 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Selection:";
             // 
+            // boldButton
+            // 
+            this.boldButton.Location = new System.Drawing.Point(63, 3);
+            this.boldButton.Name = "boldButton";
+            this.boldButton.Size = new System.Drawing.Size(25, 23);
+            this.boldButton.TabIndex = 0;
+            this.boldButton.Text = "B";
+            this.boldButton.UseVisualStyleBackColor = true;
+            this.boldButton.Click += new System.EventHandler(this.boldButton_Click);
+            // 
             // italicButton
             // 
             this.italicButton.Location = new System.Drawing.Point(94, 3);
@@ -219,6 +212,16 @@
             this.italicButton.UseVisualStyleBackColor = true;
             this.italicButton.Click += new System.EventHandler(this.italicButton_Click);
             // 
+            // exampleButton
+            // 
+            this.exampleButton.Location = new System.Drawing.Point(129, 3);
+            this.exampleButton.Name = "exampleButton";
+            this.exampleButton.Size = new System.Drawing.Size(36, 23);
+            this.exampleButton.TabIndex = 1;
+            this.exampleButton.Text = "Ex.";
+            this.exampleButton.UseVisualStyleBackColor = true;
+            this.exampleButton.Click += new System.EventHandler(this.exampleButton_Click);
+            // 
             // headerButton
             // 
             this.headerButton.Location = new System.Drawing.Point(171, 3);
@@ -228,6 +231,16 @@
             this.headerButton.Text = "H";
             this.headerButton.UseVisualStyleBackColor = true;
             this.headerButton.Click += new System.EventHandler(this.headerButton_Click);
+            // 
+            // linebreakButton
+            // 
+            this.linebreakButton.Location = new System.Drawing.Point(203, 3);
+            this.linebreakButton.Name = "linebreakButton";
+            this.linebreakButton.Size = new System.Drawing.Size(27, 23);
+            this.linebreakButton.TabIndex = 5;
+            this.linebreakButton.Text = "br";
+            this.linebreakButton.UseVisualStyleBackColor = true;
+            this.linebreakButton.Click += new System.EventHandler(this.linebreakButton_Click);
             // 
             // PartInputDialog
             // 
@@ -270,5 +283,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button italicButton;
         private System.Windows.Forms.Button headerButton;
+        private System.Windows.Forms.Button linebreakButton;
     }
 }
