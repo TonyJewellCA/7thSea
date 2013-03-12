@@ -30,6 +30,8 @@ namespace _7thSeaEditor
 
             itemSelector.Items.Add(new ListItemWithId(name, id));
             EnableItemEditingControlsIfNecessary();
+
+            PreviewCurrentItem();
         }
 
         private void newItemButton_Click(object sender, EventArgs e)
@@ -54,7 +56,7 @@ namespace _7thSeaEditor
                 ListItemWithId item = (ListItemWithId)partListBox.Items[partListBox.SelectedIndex];
 
                 SeventhSeaPart part = database.GetPart(item.Id);
-                previewWindow.DocumentText = part.Description;
+                previewWindow.DocumentText = part.GetMarkdown();
             }
             else
             {
@@ -66,7 +68,8 @@ namespace _7thSeaEditor
 
         private void CreateNewPart(string name, string description)
         {
-            int id = database.CreatePart(name, description);
+            ListItemWithId categoryItem = (ListItemWithId)categorySelector.Items[categorySelector.SelectedIndex];
+            int id = database.CreatePart(name, description, categoryItem.Id);
             partListBox.Items.Add(new ListItemWithId(name, id));
             EnableItemEditingControlsIfNecessary();
         }
@@ -116,6 +119,8 @@ namespace _7thSeaEditor
         {
 
             SeventhSeaUtils.SetListItems(itemSelector, database.GetItemListForCategory(id));
+
+            FilterPartListForCategoryIfNecessary();
 
             EnableAddPartButtonIfNecessary();
             EnableItemCreationControlsIfNecessary();
@@ -203,28 +208,40 @@ namespace _7thSeaEditor
             DeletePart(part.Id);
         }
 
-        private void AddPartToItem(int partId, int itemId)
+        private void PreviewCurrentItem()
         {
-            database.AddPartToItem(partId, itemId);
-            SeventhSeaPart part = database.GetPart(partId);
-            SeventhSeaItem item = database.GetItem(itemId);
-            currentItemPartsBox.Items.Add(new ListItemWithId(part.Name, part.Id));
+            if (itemSelector.SelectedIndex == -1)
+                previewWindow.DocumentText = "";
+            else
+            {
+                ListItemWithId itemItem = (ListItemWithId)itemSelector.Items[itemSelector.SelectedIndex];
+                SeventhSeaItem item = database.GetItem(itemItem.Id);
 
-            previewWindow.DocumentText = item.GetMarkdown();
+                previewWindow.DocumentText = item.GetMarkdown();
+            }
         }
 
-        private void RemovePartFromitem(int itemPartId)
+        private void AddPartToItem(int partId, int itemId)
+        {
+            int itemPartId = database.AddPartToItem(partId, itemId);
+            ListItemWithId partItem = (ListItemWithId)partListBox.Items[partListBox.SelectedIndex];
+            currentItemPartsBox.Items.Add(new ListItemWithId(partItem.Text, itemPartId));
+
+            PreviewCurrentItem();
+        }
+
+        private void RemovePartFromItem(int itemPartId)
         {
             database.RemovePartFromItem(itemPartId);
             currentItemPartsBox.Items.RemoveAt(currentItemPartsBox.SelectedIndex);
+
+            PreviewCurrentItem();
         }
 
         private void EnableItemEditingControlsIfNecessary()
         {
             bool enable = currentItemPartsBox.SelectedIndex != -1;
 
-            partUpButton.Enabled = enable;
-            partDownButton.Enabled = enable;
             removePartButton.Enabled = enable;
 
         }
@@ -250,12 +267,16 @@ namespace _7thSeaEditor
                 SeventhSeaUtils.SetListItems(currentItemPartsBox, database.GetItemPartsList(itemItem.Id));
             }
 
+            PreviewCurrentItem();
+
             EnableAddPartButtonIfNecessary();
             EnableItemEditingControlsIfNecessary();
         }
 
         private void currentItemPartsBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            PreviewCurrentItem();
+
             EnableItemEditingControlsIfNecessary();
 
         }
@@ -265,7 +286,7 @@ namespace _7thSeaEditor
 
             ListItemWithId itemPart = (ListItemWithId)currentItemPartsBox.Items[currentItemPartsBox.SelectedIndex];
 
-            RemovePartFromitem(itemPart.Id);
+            RemovePartFromItem(itemPart.Id);
         }
 
         private void SwapCurrentPartsItems(int a, int b)
@@ -277,34 +298,6 @@ namespace _7thSeaEditor
             currentItemPartsBox.Items[b] = temp;
             currentItemPartsBox.SelectedIndex = b;
             currentItemPartsBox.EndUpdate();
-        }
-
-        private void partUpButton_Click(object sender, EventArgs e)
-        {
-            ListItemWithId partItem = (ListItemWithId)currentItemPartsBox.Items[currentItemPartsBox.SelectedIndex];
-            ListItemWithId itemItem = (ListItemWithId)itemSelector.Items[itemSelector.SelectedIndex];
-
-            SeventhSeaPart part = database.GetPart(partItem.Id);
-            SeventhSeaItem item = database.GetItem(itemItem.Id);
-
-            if (item.MovePartUp(part))
-                SwapCurrentPartsItems(currentItemPartsBox.SelectedIndex, currentItemPartsBox.SelectedIndex - 1);
-
-            previewWindow.DocumentText = item.GetMarkdown();
-        }
-
-        private void partDownButton_Click(object sender, EventArgs e)
-        {
-            ListItemWithId partItem = (ListItemWithId)currentItemPartsBox.Items[currentItemPartsBox.SelectedIndex];
-            ListItemWithId itemItem = (ListItemWithId)itemSelector.Items[itemSelector.SelectedIndex];
-
-            SeventhSeaPart part = database.GetPart(partItem.Id);
-            SeventhSeaItem item = database.GetItem(itemItem.Id);
-
-            if (item.MovePartDown(part))
-                SwapCurrentPartsItems(currentItemPartsBox.SelectedIndex, currentItemPartsBox.SelectedIndex + 1);
-
-            previewWindow.DocumentText = item.GetMarkdown();
         }
 
         private void LoadDatabase(string path)
@@ -324,6 +317,41 @@ namespace _7thSeaEditor
 
             if (dialog.ShowDialog() == DialogResult.OK)
                 LoadDatabase(dialog.FileName);
+        }
+
+        private void DeleteItem(int id)
+        {
+            database.DeleteItem(id);
+            itemSelector.Items.RemoveAt(itemSelector.SelectedIndex);
+
+            previewWindow.DocumentText = "";
+        }
+
+        private void deleteItemButton_Click(object sender, EventArgs e)
+        {
+            ListItemWithId item = (ListItemWithId)itemSelector.Items[itemSelector.SelectedIndex];
+
+            DialogResult result = MessageBox.Show("Do you really want to delete " + item.Text + '?', "Delete " + item.Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+
+            if (result == DialogResult.OK)
+                DeleteItem(item.Id);
+        }
+
+        private void FilterPartListForCategoryIfNecessary()
+        {
+            if (partFilterBox.Text != "All Parts" && categorySelector.SelectedIndex != -1)
+            {
+                ListItemWithId categoryItem = (ListItemWithId)categorySelector.Items[categorySelector.SelectedIndex];
+                SeventhSeaUtils.SetListItems(partListBox, database.GetPartListInfoForCategory(categoryItem.Id));
+            }
+        }
+
+        private void partFilterBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (partFilterBox.Text == "All Parts")
+                SeventhSeaUtils.SetListItems(partListBox, database.GetPartListInfo());
+            else
+                FilterPartListForCategoryIfNecessary();
         }
     }
 }

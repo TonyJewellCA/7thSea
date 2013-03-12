@@ -45,5 +45,39 @@ namespace _7thSeaEditor
         {
             previewWindow.DocumentText = descriptionBox.Text;
         }
+
+        private void TagSelection(string tagStart, string tagEnd)
+        {
+            if (descriptionBox.SelectionLength == 0)
+                return;
+
+            string text = descriptionBox.Text;
+
+            string result = text.Substring(0, descriptionBox.SelectionStart) +
+                tagStart + text.Substring(descriptionBox.SelectionStart, descriptionBox.SelectionLength) + tagEnd +
+                text.Substring(descriptionBox.SelectionStart + descriptionBox.SelectionLength);
+
+            descriptionBox.Text = result;
+        }
+
+        private void boldButton_Click(object sender, EventArgs e)
+        {
+            TagSelection("<strong>", "</strong>");
+        }
+
+        private void exampleButton_Click(object sender, EventArgs e)
+        {
+            TagSelection("<p style='background-color:#E8E8E8;'>", "</p>");
+        }
+
+        private void italicButton_Click(object sender, EventArgs e)
+        {
+            TagSelection("<em>", "</em>");
+        }
+
+        private void headerButton_Click(object sender, EventArgs e)
+        {
+            TagSelection("<h3>", "</h3>");
+        }
     }
 }

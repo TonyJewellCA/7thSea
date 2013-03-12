@@ -54,14 +54,15 @@
             this.deleteItemButton = new System.Windows.Forms.Button();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.addPartButton = new System.Windows.Forms.Button();
-            this.partUpButton = new System.Windows.Forms.Button();
-            this.partDownButton = new System.Windows.Forms.Button();
             this.removePartButton = new System.Windows.Forms.Button();
             this.currentItemPartsBox = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.partFilterBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.categoryBox.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -74,6 +75,7 @@
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -195,11 +197,13 @@
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel2, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel5, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.partListBox, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(203, 340);
@@ -211,7 +215,7 @@
             this.flowLayoutPanel2.Controls.Add(this.editPartButton);
             this.flowLayoutPanel2.Controls.Add(this.deletePartButton);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(197, 39);
             this.flowLayoutPanel2.TabIndex = 0;
@@ -337,12 +341,11 @@
             this.deleteItemButton.TabIndex = 3;
             this.deleteItemButton.Text = "Delete";
             this.deleteItemButton.UseVisualStyleBackColor = true;
+            this.deleteItemButton.Click += new System.EventHandler(this.deleteItemButton_Click);
             // 
             // flowLayoutPanel4
             // 
             this.flowLayoutPanel4.Controls.Add(this.addPartButton);
-            this.flowLayoutPanel4.Controls.Add(this.partUpButton);
-            this.flowLayoutPanel4.Controls.Add(this.partDownButton);
             this.flowLayoutPanel4.Controls.Add(this.removePartButton);
             this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 48);
@@ -361,31 +364,9 @@
             this.addPartButton.UseVisualStyleBackColor = true;
             this.addPartButton.Click += new System.EventHandler(this.addPartButton_Click);
             // 
-            // partUpButton
-            // 
-            this.partUpButton.Enabled = false;
-            this.partUpButton.Location = new System.Drawing.Point(84, 3);
-            this.partUpButton.Name = "partUpButton";
-            this.partUpButton.Size = new System.Drawing.Size(75, 23);
-            this.partUpButton.TabIndex = 1;
-            this.partUpButton.Text = "Up";
-            this.partUpButton.UseVisualStyleBackColor = true;
-            this.partUpButton.Click += new System.EventHandler(this.partUpButton_Click);
-            // 
-            // partDownButton
-            // 
-            this.partDownButton.Enabled = false;
-            this.partDownButton.Location = new System.Drawing.Point(165, 3);
-            this.partDownButton.Name = "partDownButton";
-            this.partDownButton.Size = new System.Drawing.Size(75, 23);
-            this.partDownButton.TabIndex = 2;
-            this.partDownButton.Text = "Down";
-            this.partDownButton.UseVisualStyleBackColor = true;
-            this.partDownButton.Click += new System.EventHandler(this.partDownButton_Click);
-            // 
             // removePartButton
             // 
-            this.removePartButton.Location = new System.Drawing.Point(246, 3);
+            this.removePartButton.Location = new System.Drawing.Point(84, 3);
             this.removePartButton.Name = "removePartButton";
             this.removePartButton.Size = new System.Drawing.Size(96, 23);
             this.removePartButton.TabIndex = 3;
@@ -422,19 +403,51 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
-            // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.Controls.Add(this.label1);
+            this.flowLayoutPanel5.Controls.Add(this.partFilterBox);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 32);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(200, 42);
+            this.flowLayoutPanel5.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Filter:";
+            // 
+            // partFilterBox
+            // 
+            this.partFilterBox.FormattingEnabled = true;
+            this.partFilterBox.Items.AddRange(new object[] {
+            "Current Category",
+            "All Parts"});
+            this.partFilterBox.Location = new System.Drawing.Point(41, 3);
+            this.partFilterBox.Name = "partFilterBox";
+            this.partFilterBox.Size = new System.Drawing.Size(121, 21);
+            this.partFilterBox.TabIndex = 1;
+            this.partFilterBox.Text = "All Parts";
+            this.partFilterBox.SelectedIndexChanged += new System.EventHandler(this.partFilterBox_SelectedIndexChanged);
             // 
             // MainForm
             // 
@@ -460,6 +473,8 @@
             this.flowLayoutPanel4.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -495,11 +510,12 @@
         private System.Windows.Forms.Button deleteItemButton;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
         private System.Windows.Forms.Button addPartButton;
-        private System.Windows.Forms.Button partUpButton;
-        private System.Windows.Forms.Button partDownButton;
         private System.Windows.Forms.ListBox currentItemPartsBox;
         private System.Windows.Forms.Button removePartButton;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox partFilterBox;
     }
 }
 

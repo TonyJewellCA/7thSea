@@ -10,7 +10,6 @@ namespace _7thSeaEditor
     {
         int idCounter = 1;
 
-        Dictionary<int, SeventhSeaCategory> categories = new Dictionary<int, SeventhSeaCategory>();
         Dictionary<int, SeventhSeaPart> parts = new Dictionary<int, SeventhSeaPart>();
         Dictionary<int, SeventhSeaItem> items = new Dictionary<int, SeventhSeaItem>();
 
@@ -63,14 +62,15 @@ namespace _7thSeaEditor
             }
         }
 
-        public int CreatePart(string name, string description)
+        public int CreatePart(string name, string description, int categoryId)
         {
             using (SQLiteTransaction transaction = connection.BeginTransaction())
             {
-                string sql = "INSERT INTO parts VALUES (NULL, @name, @description);";
+                string sql = "INSERT INTO parts VALUES (NULL, @name, @description, @categoryId);";
                 SQLiteCommand insert = new SQLiteCommand(sql, connection);
                 insert.Parameters.Add(new SQLiteParameter("name", name));
                 insert.Parameters.Add(new SQLiteParameter("description", description));
+                insert.Parameters.Add(new SQLiteParameter("categoryId", categoryId));
                 insert.ExecuteNonQuery();
                 transaction.Commit();
             }
@@ -83,7 +83,7 @@ namespace _7thSeaEditor
         {
             using (SQLiteTransaction transaction = connection.BeginTransaction())
             {
-                string sql = "UPDATE parts SET name= @name description= @description WHERE _id = @id;";
+                string sql = "UPDATE parts SET name= @name, description= @description WHERE _id = @id;";
                 SQLiteCommand update = new SQLiteCommand(sql, connection);
                 update.Parameters.Add(new SQLiteParameter("name", name));
                 update.Parameters.Add(new SQLiteParameter("description", description));
@@ -140,6 +140,8 @@ namespace _7thSeaEditor
         {
             using (SQLiteTransaction transaction = connection.BeginTransaction())
             {
+                DeleteItemPartsForItem(id);
+
                 string sql = "DELETE FROM items WHERE _id = @id;";
                 SQLiteCommand del = new SQLiteCommand(sql, connection);
                 del.Parameters.Add(new SQLiteParameter("id", id));
@@ -150,9 +152,15 @@ namespace _7thSeaEditor
 
         public int GetPartCountForItem(int itemId)
         {
-            SQLiteCommand count = new SQLiteCommand("SELECT MAX(position) from item_parts where itemId = @itemId;", connection);
+            SQLiteCommand count = new SQLiteCommand("SELECT COUNT(position) from item_parts where itemId = @itemId;", connection);
             count.Parameters.Add(new SQLiteParameter("itemId", itemId));
-            return Convert.ToInt32(count.ExecuteScalar());
+            object result =  count.ExecuteScalar();
+
+            if (result is DBNull)
+                return 0;
+            else
+                return Convert.ToInt32(result);
+
         }
 
         public int AddPartToItem(int partId, int itemId)
@@ -178,7 +186,7 @@ namespace _7thSeaEditor
         {
             using (SQLiteTransaction transaction = connection.BeginTransaction())
             {
-                string sql = "DELETE FROM item_parts WHERE id = @itemPartId;";
+                string sql = "DELETE FROM item_parts WHERE _id = @itemPartId;";
                 SQLiteCommand del = new SQLiteCommand(sql, connection);
                 del.Parameters.Add(new SQLiteParameter("itemPartId", itemPartId));
                 del.ExecuteNonQuery();
@@ -188,26 +196,43 @@ namespace _7thSeaEditor
 
         public SeventhSeaPart GetPart(int id)
         {
-            if (parts.ContainsKey(id))
-                return parts[id];
-            else
-                return null;
-        }
+            string sql = "SELECT _id, name, description, categoryId from parts where _id = @id";
+            SQLiteCommand command = new SQLiteCommand(sql, connection);
+            command.Parameters.Add(new SQLiteParameter("id", id));
+            SQLiteDataReader result = command.ExecuteReader();
 
-        public SeventhSeaCategory GetCategory(int id)
-        {
-            if (categories.ContainsKey(id))
-                return categories[id];
+            if (result.Read())
+                return new SeventhSeaPart(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetInt32(3));
             else
                 return null;
         }
 
         public SeventhSeaItem GetItem(int id)
         {
-            if (items.ContainsKey(id))
-                return items[id];
+            List<SeventhSeaPart> parts = GetPartsForItem(id);
+
+            string sql = "SELECT _id, categoryId, name, description FROM items WHERE _id = @id;";
+            SQLiteCommand command = new SQLiteCommand(sql, connection);
+            command.Parameters.Add(new SQLiteParameter("id", id));
+            SQLiteDataReader result = command.ExecuteReader();
+
+            if (result.Read())
+                return new SeventhSeaItem(result.GetInt32(0), result.GetInt32(1), result.GetString(2), result.GetString(3), parts);
             else
                 return null;
+
+        }
+
+        private void DeleteItemPartsForItem(int id)
+        {
+            using (SQLiteTransaction transaction = connection.BeginTransaction())
+            {
+                string sql = "DELETE from item_parts where itemId = @id;";
+                SQLiteCommand command = new SQLiteCommand(sql, connection);
+                command.Parameters.Add(new SQLiteParameter("id", id));
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
         }
 
         private void ReadListItemsWithId(List<ListItemWithId> items, SQLiteDataReader rows)
@@ -218,7 +243,7 @@ namespace _7thSeaEditor
 
         public ListItemWithId[] GetItemPartsList(int itemId)
         {
-            string sql = "SELECT parts.name, item_parts._id from item_parts JOIN parts on item_parts.partid = parts._id WHERE item_parts.itemId = @itemId ORDER BY item_parts.position;";
+            string sql = "SELECT parts.name, item_parts._id FROM item_parts JOIN parts on item_parts.partid = parts._id WHERE item_parts.itemId = @itemId ORDER BY item_parts.position;";
             SQLiteCommand command = new SQLiteCommand(sql, connection);
             command.Parameters.Add(new SQLiteParameter("itemId", itemId));
 
@@ -231,8 +256,8 @@ namespace _7thSeaEditor
 
         public ListItemWithId[] GetItemListForCategory(int categoryId)
         {
-            string statement = "SELECT name, _id FROM items where categoryId = @categoryId;";
-            SQLiteCommand command = new SQLiteCommand(statement, connection);
+            string sql = "SELECT name, _id FROM items WHERE categoryId = @categoryId;";
+            SQLiteCommand command = new SQLiteCommand(sql, connection);
             command.Parameters.Add(new SQLiteParameter("categoryId", categoryId));
 
             SQLiteDataReader rows = command.ExecuteReader();
@@ -244,8 +269,20 @@ namespace _7thSeaEditor
 
         public ListItemWithId[] GetPartListInfo()
         {
-            string statement = "SELECT name, _id FROM parts;";
-            SQLiteCommand command = new SQLiteCommand(statement, connection);
+            string sql = "SELECT name, _id FROM parts;";
+            SQLiteCommand command = new SQLiteCommand(sql, connection);
+            SQLiteDataReader rows = command.ExecuteReader();
+            List<ListItemWithId> items = new List<ListItemWithId>();
+            ReadListItemsWithId(items, rows);
+
+            return items.ToArray();
+        }
+
+        public ListItemWithId[] GetPartListInfoForCategory(int id)
+        {
+            string sql = "SELECT name, _id FROM parts where categoryId = @id;";
+            SQLiteCommand command = new SQLiteCommand(sql, connection);
+            command.Parameters.Add(new SQLiteParameter("id", id));
             SQLiteDataReader rows = command.ExecuteReader();
             List<ListItemWithId> items = new List<ListItemWithId>();
             ReadListItemsWithId(items, rows);
@@ -255,13 +292,28 @@ namespace _7thSeaEditor
 
         public ListItemWithId[] GetCategoryListInfo()
         {
-            string statement = "SELECT name, _id FROM categories;";
-            SQLiteCommand command = new SQLiteCommand(statement, connection);
+            string sql = "SELECT name, _id FROM categories;";
+            SQLiteCommand command = new SQLiteCommand(sql, connection);
             SQLiteDataReader rows = command.ExecuteReader();
             List<ListItemWithId> items = new List<ListItemWithId>();
             ReadListItemsWithId(items, rows);
 
             return items.ToArray();
+        }
+
+        public List<SeventhSeaPart> GetPartsForItem(int itemId)
+        {
+            List<SeventhSeaPart> items = new List<SeventhSeaPart>();
+
+            string sql = "SELECT parts._id, parts.name, parts.description, parts.categoryId FROM item_parts JOIN parts ON item_parts.partId = parts._id WHERE item_parts.itemId = @itemId;";
+            SQLiteCommand command = new SQLiteCommand(sql, connection);
+            command.Parameters.Add(new SQLiteParameter("itemId", itemId));
+            SQLiteDataReader rows = command.ExecuteReader();
+
+            while (rows.Read())
+                items.Add (new SeventhSeaPart(rows.GetInt32(0), rows.GetString(1), rows.GetString(2), rows.GetInt32(3)));
+
+            return items;
         }
     }
 }
